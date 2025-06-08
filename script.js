@@ -1,25 +1,28 @@
 const steps = [
-  document.getElementById("step1"),
-  document.getElementById("step2"),
-  document.getElementById("step3"),
-  document.getElementById("final")
+  "🎉 Click to open your birthday card!",
+  "🎂 Here's the next step!",
+  "🎁 Ready for the gift?",
+  "🎈 Final step! Have a great day!"
 ];
 
 let currentStep = 0;
+const card = document.getElementById("card");
+const front = document.getElementById("front");
+const back = document.getElementById("back");
 
-// Get URL parameters
-const urlParams = new URLSearchParams(window.location.search);
-const nameParam = urlParams.get("name");
-const messageParam = urlParams.get("message");
+function updateCard() {
+  front.textContent = steps[currentStep];
+  back.textContent = steps[(currentStep + 1) % steps.length];
+}
 
-// Set custom values if present
-if (nameParam) document.getElementById("name").textContent = decodeURIComponent(nameParam);
-if (messageParam) document.getElementById("message").textContent = decodeURIComponent(messageParam);
+card.addEventListener("click", () => {
+  card.classList.add("flipped");
 
-// Click to reveal each step
-document.querySelector(".card-container").addEventListener("click", () => {
-  if (currentStep < steps.length - 1) {
-    steps[currentStep + 1].classList.remove("hidden");
-    currentStep++;
-  }
+  setTimeout(() => {
+    currentStep = (currentStep + 1) % steps.length;
+    updateCard();
+    card.classList.remove("flipped");
+  }, 800); // Duration matches CSS transition
 });
+
+updateCard();
